@@ -1,26 +1,26 @@
-# 富士山下的无人罗森 · 三维交互商店
+# Lawson at Mount Fuji · Interactive 3D Store
 
-一个可以在浏览器中逛店、开冰箱门、拿起商品并拖动查看的三维商店项目，已接入完整 V12 商店模型、第一人称移动和购物篮交互。
+A browser-based 3D store where you can walk around, open refrigerator doors, pick up products, and drag to inspect them. The project includes the complete V12 store model, first-person navigation, and basket interactions.
 
-仓库包含页面运行所需的打包模型和商品贴图，无需安装 Blender 即可启动。当前发布的是项目源码和运行资源，尚未部署在线体验页面。
+Packaged models and product textures are included, so Blender is not required to run the app. This repository publishes the source code and runtime assets; a live website has not been deployed.
 
-## 主要功能
+## Features
 
-- 3880 个商品实例、1724 个陈列位、846 种商品，覆盖 12 个陈列区。
-- 前排商品可拿起、自由拖动旋转、放回货架或加入购物篮。
-- 拿起查看使用独立深度层，不受货架遮挡；商品自身仍保留正常前后遮挡。
-- 拿起、放回与收进购物篮有短过渡；系统“减少动态效果”设置会简化动画。
-- C1/C4 的八扇冰箱门支持点击开关，也可在提示出现时按 E；关门不能隔玻璃取货，门扇与玩家有避让及行走碰撞。
-- 拿走前排后，后排商品变为可拿取状态。
-- 商品按材质合并为批量渲染，但仍保留逐件射线拾取和业务数据。
-- 店外可环绕观察；进入商店时镜头从正门平滑穿入，建筑保持完整。
-- 店内支持 WASD/方向键移动、拖动环顾，以及商店边界和六组中央货架的碰撞阻挡。
-- 静态店体、外屋顶和货架商品独立加载；GLB 合计约 32 MiB。
-- 货架共用正反面 256px 图集，靠近与拿起时按需加载更高清的正反面 WebP。
+- 3,880 product instances, 1,724 shelf positions, and 846 product variants across 12 display zones.
+- Pick up front-row products, rotate them freely by dragging, return them to the shelf, or add them to the basket.
+- Inspected products use a separate depth layer to avoid shelf occlusion while preserving their own internal depth ordering.
+- Short transitions for picking up, returning, and adding products to the basket, with simplified animations when reduced motion is enabled.
+- Eight refrigerator doors in C1/C4 support clicking or pressing E when prompted. Closed doors block product selection through the glass, and door interactions account for player clearance and movement collisions.
+- Products behind the front row become selectable as items are removed.
+- Products are batched by material while retaining per-item raycasting and application data.
+- Orbit around the store outside, then enter smoothly through the front door without removing the roof.
+- Move with WASD or arrow keys and drag to look around, with collision boundaries for the store and six central shelf groups.
+- The static store, roof, and shelf products load separately, totaling approximately 32 MiB of GLB assets.
+- Shelves use shared 256px front/back texture atlases; higher-resolution front/back WebP textures load on demand for nearby and inspected products.
 
-## 本地运行
+## Local Setup
 
-准备好 Node.js 和 pnpm，然后执行：
+Install Node.js and pnpm, then run:
 
 ```bash
 git clone https://github.com/zherunliu/lawson.git
@@ -29,21 +29,21 @@ pnpm install
 pnpm dev
 ```
 
-打开 `http://127.0.0.1:5173/`。
+Open `http://127.0.0.1:5173/`.
 
-仓库已包含 `public/` 中的打包模型和商品贴图，克隆后即可运行，不需要 Blender 或外部 `art/` 目录。
+The packaged models and product textures are included in `public/`. Running the cloned project does not require Blender or an external `art/` directory.
 
-## 操作方式
+## Controls
 
-- 进入商店：点击页面上的进入按钮。
-- 移动与观察：使用 WASD 或方向键移动，拖动视角环顾。
-- 查看商品：拿起前排商品后，拖动商品自由旋转；按 Esc 放回。
-- 购物篮：查看商品时可将其加入购物篮。
-- 冰箱门：点击门扇，或在开关门提示出现时按 E。
+- Enter the store: click the entry button.
+- Move and look: use WASD or arrow keys to move; drag to look around.
+- Inspect a product: pick up a front-row item and drag to rotate it; press Esc to return it.
+- Basket: add a product to the basket while inspecting it.
+- Refrigerator doors: click a door or press E when the open/close prompt appears.
 
-页面操作提示保持简短英文，商品包装和名称保留原文。
+On-screen hints use concise English. Product packaging and names retain their original language.
 
-## 测试与打包
+## Tests and Build
 
 ```bash
 pnpm test
@@ -51,15 +51,16 @@ pnpm test:assets
 pnpm build
 ```
 
-构建产物位于 `dist/`。执行 `pnpm preview` 可在本地预览构建结果；本地预览不代表已经部署到互联网。
+Build output is written to `dist/`. Run `pnpm preview` to preview the production build locally; this does not deploy it to the internet.
 
-## 模型与贴图处理
+## Model and Texture Pipeline
 
-以下是可选的建模工作区工具，需要仓库外的 `../art/` 源资源和 Blender；原始 `.blend`、中间文件和历史备份不随 Web 仓库发布。
+The following optional modeling tools require Blender and source assets in an external `../art/` directory. Original `.blend` files, intermediate exports, and historical backups are not included in this web repository.
 
-当前导出源是 `lawson-complete-v12-optimized-closeup-v9.blend`，保留 V6–V8 原件。
-导出时源文件保持只读，每个对象先固化自身修改器再合并；场景使用 Meshopt 压缩并保留浮点位置和法线，商品仅量化位置与纹理坐标。
-需要重新导出时：
+The current export source is `lawson-complete-v12-optimized-closeup-v9.blend`; V6–V8 originals are retained in the modeling workspace.
+Exports leave the source file unchanged and apply each object's modifiers before merging. Scene meshes use Meshopt compression while preserving floating-point positions and normals; product meshes quantize only positions and texture coordinates.
+
+To regenerate assets in the modeling workspace:
 
 ```bash
 pnpm assets:closeups
@@ -69,19 +70,22 @@ pnpm assets:closeups
 pnpm assets:optimize -- v02
 ```
 
-- 原始中间文件：`../art/web-export-v02/raw/`
-- 导出运行文件：`../art/web-export-v02/runtime/`，重新导出后同步到本仓库 `public/`
-- 页面使用的按需贴图：`public/product-textures/`
-- 导出清单：`../art/web-export-v02/manifest.json`
+- Raw intermediate files: `../art/web-export-v02/raw/`
+- Exported runtime files: `../art/web-export-v02/runtime/`; sync these to this repository's `public/` after exporting.
+- On-demand textures used by the app: `public/product-textures/`
+- Export manifest: `../art/web-export-v02/manifest.json`
 
-本轮修复与原始资源备份位于 `../art/web-surface-repair-20261001/`。
-冷柜凹槽、六种圆碗细化及虾仁饭穿模修复、V7 资源备份位于 `../art/web-cold-meal-repair-20261001/`；对应验证脚本为 `tools/blender/verify_cold_meal.py`。
-V9 对 28 种商品的颜色重叠面进行平面裁切；审计、修复记录和 V8 资源备份位于 `../art/web-interaction-repair-20261001/`。八扇门保留在场景 GLB 中的独立门轴节点，不再合并进静态柜体。自动检查并不代表全量商品逐角度视觉验收。
-导出器回归测试：`Blender --background --python tools/blender/test_export_modifiers.py`。
-当前包含 3268 张 WebP 图片（817 种商品的正反面、两档清晰度），按需加载以避免一次性解码全部图片。
+Surface repair records and original asset backups are stored in `../art/web-surface-repair-20261001/`.
+Refrigerator groove repairs, refinements to six bowl types, shrimp-rice intersection fixes, and V7 asset backups are stored in `../art/web-cold-meal-repair-20261001/`. The corresponding verification script is `tools/blender/verify_cold_meal.py`.
 
-## 已知限制
+V9 clips overlapping colored faces for 28 product variants. Audit results, repair records, and V8 asset backups are stored in `../art/web-interaction-repair-20261001/`. All eight doors retain separate hinge nodes in the scene GLB instead of being merged into the static cabinets. Automated checks do not establish visual acceptance for every product at every angle.
 
-- 自动测试不代替全部商品在各个角度下的视觉验收。
-- 显卡纹理压缩（KTX2/Basis）、按视野或区域卸载资源仍待完善。
-- 移动设备的性能和交互体验尚未完成验收。
+Exporter regression test: `Blender --background --python tools/blender/test_export_modifiers.py`.
+
+The runtime includes 3,268 WebP images: front and back textures at two resolution levels for 817 products. Images load on demand to avoid decoding the entire collection at once.
+
+## Known Limitations
+
+- Automated tests do not replace visual inspection of every product from all angles.
+- GPU texture compression with KTX2/Basis and view- or zone-based asset unloading remain future work.
+- Mobile performance and interaction testing are not yet complete.
