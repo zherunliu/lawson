@@ -5,7 +5,7 @@ import { type ProductInfo, useGameStore } from './game-store'
 const product: ProductInfo = {
   instanceId: 'A1 / test / depth-0',
   sku: 'test-sku',
-  name: '测试商品',
+  name: 'Test product',
   brand: 'LAWSON',
   price: 168,
 }
